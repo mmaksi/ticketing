@@ -1,0 +1,20 @@
+apiVersion: skaffold/v4beta3
+kind: Config
+manifests:
+  # watches changes to kubernetes yaml files
+  rawYaml:
+    - ./infra/k8s/*
+build:
+  # don't push to docker hub
+  local:
+    push: false
+  artifacts:
+    - image: markmaksi/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          # watch all ts files in auth service
+          - src: 'src/**/*.ts'
+            dest: .
