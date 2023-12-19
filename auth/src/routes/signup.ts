@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
-import { body } from 'express-validator';
+import { body, validationResult } from 'express-validator';
+import { RequestValidationError } from '../errors/request-validation-error';
+import { DatabaseValidationError } from '../errors/database-validation-error';
 const router = express.Router();
 
 router.post(
@@ -9,7 +11,15 @@ router.post(
     body('password').trim().isLength({ min: 4, max: 20 }),
   ],
   (req: Request, res: Response) => {
-    return res.send('signup');
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      throw new RequestValidationError(errors.array());
+    }
+
+    throw new DatabaseValidationError();
+
+    return res.send({});
   },
 );
 
