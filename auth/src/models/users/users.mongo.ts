@@ -1,4 +1,5 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
+import { Password } from '../../utils/bcrypt';
 
 interface UserAttributes {
   password: string;
@@ -21,6 +22,15 @@ const userSchema = new Schema<UserDoc, UserModel>({
 
 // User model to access User collection in mongo
 const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
+
+// middlewares
+userSchema.pre('save', async function (done) {
+  if (this.isModified('password')) {
+    const hashed = await Password.hash(this.get('password'));
+    this.set('password', hashed);
+  }
+  done();
+});
 
 // statics
 userSchema.statics.build = (attributes: UserAttributes) => {
