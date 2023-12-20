@@ -1,7 +1,13 @@
-import { User } from './users.mongo';
+import { User, UserDoc } from './users.mongo';
 
-function findUser(email: string) {
-  User.findOne({ email });
+async function findUser(email: string) {
+  return await User.findOne({ email });
 }
 
-export { findUser };
+async function createUser(email: string, password: string) {
+  const user = User.build({ email, password });
+  await user.save();
+  return user;
+}
+
+export { findUser, createUser };

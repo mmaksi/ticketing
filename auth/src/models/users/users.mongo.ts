@@ -27,4 +27,4 @@ userSchema.statics.build = (attributes: UserAttributes) => {
   return new User(attributes);
 };
 
-export { User };
+export { User, UserDoc };
