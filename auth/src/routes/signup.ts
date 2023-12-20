@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { RequestValidationError } from '../errors/request-validation-error';
-import { DatabaseValidationError } from '../errors/database-validation-error';
+import { findUser } from '../models/users/users.model';
 const router = express.Router();
 
 router.post(
@@ -17,9 +17,9 @@ router.post(
       throw new RequestValidationError(errors.array());
     }
 
-    throw new DatabaseValidationError();
+    const { email } = req.body;
 
-    return res.send({});
+    const existingUser = findUser(email);
   },
 );
 
