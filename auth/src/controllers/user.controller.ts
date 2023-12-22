@@ -19,11 +19,11 @@ const signUp = async (req: Request, res: Response) => {
   }
 
   const existingUser = await findUser(email);
-
   if (existingUser) {
     throw new BadRequestError('Email already in use');
   }
   const user = await createUser(email, password);
+
   // Generate JWT
   const userJwt = jwt.sign({ id: user.id, email: user.email }, 's');
   // Store it in session object

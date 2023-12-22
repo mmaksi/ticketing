@@ -20,10 +20,7 @@ const userSchema = new Schema<UserDoc, UserModel>({
   password: { type: String, required: true },
 });
 
-// User model to access User collection in mongo
-const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
-
-// middlewares
+// Define middleware before creating the model
 userSchema.pre('save', async function (done) {
   if (this.isModified('password')) {
     const hashed = await Password.hash(this.get('password'));
@@ -32,9 +29,13 @@ userSchema.pre('save', async function (done) {
   done();
 });
 
-// statics
+// Define static method before creating the model
 userSchema.statics.build = (attributes: UserAttributes) => {
+  console.log('build');
   return new User(attributes);
 };
+
+// Create and export the User model
+const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
 
 export { User, UserDoc };
