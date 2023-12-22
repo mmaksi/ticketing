@@ -3,6 +3,7 @@ import { RequestValidationError } from '../errors/request-validation-error';
 import { createUser, findUser } from '../models/users/users.model';
 import { Request, Response } from 'express';
 import { BadRequestError } from '../errors/bad-request-error';
+import jwt from 'jsonwebtoken';
 
 interface RequestBody {
   email: string;
@@ -23,6 +24,11 @@ const signUp = async (req: Request, res: Response) => {
     throw new BadRequestError('Email already in use');
   }
   const user = await createUser(email, password);
+  // Generate JWT
+  const userJwt = jwt.sign({ id: user.id, email: user.email }, 's');
+  // Store it in session object
+  req.session = { jwt: userJwt };
+
   return res.status(201).json(user);
 };
 
