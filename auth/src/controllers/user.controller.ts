@@ -46,17 +46,13 @@ const signIn = async (req: Request, res: Response) => {
   return res.status(200).json(existingUser);
 };
 
-const currentUser = async (req: Request, res: Response) => {
-  if (req.session?.jwt) {
-    return res.json({ currentUser: null });
-  }
-
-  try {
-    const payload = jwt.verify(req.session?.jwt, process.env.JWT_KEY!);
-    return res.json({ currentUser: payload });
-  } catch (error) {
-    return res.json({ currentUser: null });
-  }
+const httpCurrentUser = async (req: Request, res: Response) => {
+  return res.json({ currentUser: req.currentUser || null });
 };
 
-export { signUp, signIn, currentUser };
+const signOut = (req: Request, res: Response) => {
+  req.session = null;
+  return res.json({});
+};
+
+export { signIn, signOut, signUp, httpCurrentUser };
