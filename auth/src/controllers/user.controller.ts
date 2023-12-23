@@ -1,5 +1,3 @@
-import { validationResult } from 'express-validator';
-import { RequestValidationError } from '../errors/request-validation-error';
 import { createUser, findUser } from '../models/users/users.model';
 import { Request, Response } from 'express';
 import { BadRequestError } from '../errors/bad-request-error';
