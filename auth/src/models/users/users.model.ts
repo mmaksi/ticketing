@@ -7,7 +7,6 @@ async function findUser(email: string) {
 async function createUser(email: string, password: string) {
   const user = User.build({ email, password });
   await user.save();
-  console.log({ user });
   return user;
 }
 

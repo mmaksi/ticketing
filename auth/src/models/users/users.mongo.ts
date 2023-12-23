@@ -15,10 +15,20 @@ interface UserDoc extends Document {
   email: string;
 }
 
-const userSchema = new Schema<UserDoc, UserModel>({
-  email: { type: String, required: true },
-  password: { type: String, required: true },
-});
+const userSchema = new Schema<UserDoc, UserModel>(
+  {
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+  },
+  {
+    toJSON: {
+      transform(_, ret) {
+        return { id: ret._id, email: ret.email };
+      },
+    },
+    versionKey: false,
+  },
+);
 
 // Define middleware before creating the model
 userSchema.pre('save', async function (done) {
@@ -31,8 +41,13 @@ userSchema.pre('save', async function (done) {
 
 // Define static method before creating the model
 userSchema.statics.build = (attributes: UserAttributes) => {
-  console.log('build');
   return new User(attributes);
+};
+
+userSchema.methods.toJSON = function () {
+  const { __v, password, _id, ...user } = this.toObject();
+  user.id = _id;
+  return user;
 };
 
 // Create and export the User model
