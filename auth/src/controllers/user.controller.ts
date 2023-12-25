@@ -2,7 +2,7 @@ import { createUser, findUser } from '../models/users/users.model';
 import { Request, Response } from 'express';
 import { BadRequestError } from '../errors/bad-request-error';
 import jwt from 'jsonwebtoken';
-import { Password } from '../utils/bcrypt';
+import { Password } from '../utils/bcrypt.utils';
 import { UserDoc } from '../models/users/users.mongo';
 
 interface RequestBody {
