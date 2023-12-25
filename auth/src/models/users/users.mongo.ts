@@ -1,5 +1,5 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
-import { Password } from '../../utils/bcrypt';
+import { Password } from '../../utils/bcrypt.utils';
 
 interface UserAttributes {
   password: string;
