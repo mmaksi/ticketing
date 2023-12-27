@@ -18,3 +18,12 @@ build:
           # watch all ts files in auth service
           - src: 'src/**/*.ts'
             dest: .
+    - image: markmaksi/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          # watch all ts files in auth service
+          - src: '**/*.js'
+            dest: .
