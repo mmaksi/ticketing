@@ -10,9 +10,8 @@ declare global {
 let mongo: any;
 beforeAll(async () => {
   process.env.JWT_KEY = 'somemagicalstring';
-  mongo = new MongoMemoryServer();
-  await mongo.start();
-  const mongoUri = await mongo.getUri();
+  mongo = await MongoMemoryServer.create();
+  const mongoUri = mongo.getUri();
 
   await mongoose.connect(mongoUri);
 });
@@ -26,8 +25,10 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  await mongo.stop();
-  await mongoose.disconnect();
+  if (mongo) {
+    await mongo.stop();
+  }
+  await mongoose.connection.close();
 });
 
 global.signin = async () => {
