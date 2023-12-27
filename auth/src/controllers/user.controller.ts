@@ -50,9 +50,9 @@ const httpCurrentUser = async (req: Request, res: Response) => {
   return res.json({ currentUser: req.currentUser || null });
 };
 
-const signOut = (req: Request, res: Response) => {
+const httpSignout = (req: Request, res: Response) => {
   req.session = null;
   return res.json({});
 };
 
-export { signIn, signOut, signUp, httpCurrentUser };
+export { signIn, httpSignout, signUp, httpCurrentUser };
